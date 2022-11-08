@@ -46,7 +46,7 @@ namespace Telegram_Bot
         public static rospOnDay wednesday = new rospOnDay();
         public static rospOnDay thursday = new rospOnDay();
         public static rospOnDay friday = new rospOnDay();
-        
+
         public class time_rosp
         {
             public string time_first_start;
@@ -76,17 +76,22 @@ namespace Telegram_Bot
             monday.secondPara_1.prepod = "Рубель Андрий Сергийович";
             monday.secondPara_1.link = "https://discord.com/channels/768070349320355840/1019571492222160966";
             monday.secondPara_2.name = "";
+            monday.secondPara_2.prepod = "";
+            monday.secondPara_2.link = "";
 
             monday.thirdPara_1.name = "Вышмат";
             monday.thirdPara_1.prepod = "Томілова Євгенія Павлівна";
             monday.thirdPara_1.link = "https://meet.google.com/mbi-mapk-afe";
             monday.thirdPara_2.name = "";
+            monday.thirdPara_2.prepod = "";
+            monday.thirdPara_2.link = "";
 
             monday.fourthPara_1.name = "Основи инфокомунікаций";
             monday.fourthPara_1.prepod = "Кожемякіна Надія Володимирвна";
             monday.fourthPara_1.link = "https://meet.google.com/rcf-tjcw-qch";
             monday.fourthPara_2.name = "";
-            monday.fourthPara_2.prepod = "Нет";
+            monday.fourthPara_2.prepod = "";
+            monday.fourthPara_2.link = "";
 
 
             tuesday.firstPara_1.name = "Communication Skills Training, практика";
@@ -101,13 +106,19 @@ namespace Telegram_Bot
             tuesday.secondPara_1.prepod = "Томілова Євгенія Павлівна";
             tuesday.secondPara_1.link = "https://meet.google.com/mbi-mapk-afe";
             tuesday.secondPara_2.name = "";
+            tuesday.secondPara_2.prepod = "";
+            tuesday.secondPara_2.link = "";
 
             tuesday.thirdPara_1.name = "Вышмат, лекция";
-            tuesday.thirdPara_1.name = "Куреннов";
-            tuesday.thirdPara_1.link = "";
+            tuesday.thirdPara_1.prepod = "Куреннов";
+            tuesday.thirdPara_1.link = "Неопределено";
             tuesday.thirdPara_2.name = "";
+            tuesday.thirdPara_2.prepod = "";
+            tuesday.thirdPara_2.link = "";
 
             tuesday.fourthPara_1.name = "";
+            tuesday.fourthPara_1.prepod = "";
+            tuesday.fourthPara_1.link = "";
             tuesday.fourthPara_2.name = "Дискретна математика, лекция";
             tuesday.fourthPara_2.prepod = "Карташов Олексий Вікторович";
             tuesday.fourthPara_2.link = "https://us04web.zoom.us/j/78122451647?pwd=FUFeaQgxhlFRQSvraKIVedSGiFM4GI";
@@ -129,6 +140,8 @@ namespace Telegram_Bot
             wednesday.thirdPara_2.name = "";
 
             wednesday.fourthPara_1.name = "Нет пары";
+            wednesday.fourthPara_1.prepod = "Неопредлено";
+            wednesday.fourthPara_1.link = "Неопределено";
             wednesday.fourthPara_2.name = "Вища математика, практика";
             wednesday.fourthPara_2.prepod = "Томілова Євгенія Павлівна";
             wednesday.fourthPara_2.link = "https://meet.google.com/mbi-mapk-afe";
@@ -189,13 +202,11 @@ namespace Telegram_Bot
             string text = "";
             initialization();
             string day_of_week = checkDay();
-            Console.WriteLine(day_of_week);
             switch (day_of_week)
             {
                 case "monday":
                     text = fillDay(monday, day_of_week);
                     present_day = monday;
-                    Console.WriteLine("monday 1");
                     break;
                 case "tuesday":
                     text = fillDay(tuesday, day_of_week);
@@ -254,7 +265,7 @@ namespace Telegram_Bot
 
         static void Main(string[] args)
         {
-            var client = new TelegramBotClient("5634953591:AAFsl3-jZL6kgB2FftSjz5s-eSXDZRwKu9c");
+            var client = new TelegramBotClient("5634953591:AAEWzLkitszQUtwfbizqerd2Y5cwGPlQh2o");
             client.StartReceiving(Update, Error);
             Console.ReadLine();
 
@@ -387,7 +398,7 @@ namespace Telegram_Bot
                 fourth_1 = chisl + fourth_1;
                 fourth_2 = znam + fourth_2;
                 final_text += fourth_1 + "\n";
-                final_text += fourth_2 ;
+                final_text += fourth_2;
             }
             else if (fourth_1 != "" && fourth_2 == "")
             {
@@ -413,6 +424,7 @@ namespace Telegram_Bot
             switch (update.Type)
             {
                 case Telegram.Bot.Types.Enums.UpdateType.Message:
+                    Console.WriteLine(update.Message.From.Username + $"({update.Message.From.Id}): {update.Message.Text}");
                     string text;
                     if (message.Text != "")
                     {
@@ -435,7 +447,6 @@ namespace Telegram_Bot
 
                 case Telegram.Bot.Types.Enums.UpdateType.CallbackQuery:
                     string new_text = "";
-                    Console.WriteLine(update.CallbackQuery.Data);
                     switch (update.CallbackQuery.Data)
                     {
                         case "Понедельник":
@@ -446,8 +457,6 @@ namespace Telegram_Bot
                                 present_day = monday;
                             }
                             await botClient.AnswerCallbackQueryAsync(update.CallbackQuery.Id);
-                            Console.WriteLine(text.Replace("*", "") == update.CallbackQuery.Message.Text);
-                            Console.WriteLine(text.Replace("*", "").Length + "/" + update.CallbackQuery.Message.Text.Length);
                             break;
                         case "Вторник":
                             text = fillDay(tuesday, "tuesday");
@@ -487,38 +496,38 @@ namespace Telegram_Bot
                             break;
                         case "first_chisl":
                             new_text = fill_para(my_time.time_first_start, my_time.time_first_end, present_day.firstPara_1.name, present_day.firstPara_1.prepod, present_day.firstPara_1.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                         case "first_znam":
                             new_text = fill_para(my_time.time_first_start, my_time.time_first_end, present_day.firstPara_2.name, present_day.firstPara_2.prepod, present_day.firstPara_2.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                         case "second_chisl":
                             new_text = fill_para(my_time.time_second_start, my_time.time_second_end, present_day.secondPara_1.name, present_day.secondPara_1.prepod, present_day.secondPara_1.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                         case "second_znam":
                             new_text = fill_para(my_time.time_second_start, my_time.time_second_end, present_day.secondPara_2.name, present_day.secondPara_2.prepod, present_day.secondPara_2.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                         case "third_chisl":
                             new_text = fill_para(my_time.time_third_start, my_time.time_third_end, present_day.thirdPara_1.name, present_day.thirdPara_1.prepod, present_day.thirdPara_1.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                         case "third_znam":
                             new_text = fill_para(my_time.time_third_start, my_time.time_third_end, present_day.thirdPara_2.name, present_day.thirdPara_2.prepod, present_day.thirdPara_2.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                         case "fourth_chisl":
                             new_text = fill_para(my_time.time_fourth_start, my_time.time_fourth_end, present_day.fourthPara_1.name, present_day.fourthPara_1.prepod, present_day.fourthPara_1.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                         case "fourth_znam":
                             new_text = fill_para(my_time.time_fourth_start, my_time.time_fourth_end, present_day.fourthPara_2.name, present_day.fourthPara_2.prepod, present_day.fourthPara_2.link);
-                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton());
+                            await botClient.EditMessageTextAsync(update.CallbackQuery.Message.Chat.Id, update.CallbackQuery.Message.MessageId, new_text, replyMarkup: GetBackButton(), disableWebPagePreview: true);
                             break;
                     }
-                        break;
+                    break;
             }
         }
 
@@ -526,7 +535,7 @@ namespace Telegram_Bot
         {
             string data = get_day_of_week_name(present_day);
 
-            return new InlineKeyboardMarkup(new InlineKeyboardButton("Назад") { Text = "Назад", CallbackData = data});
+            return new InlineKeyboardMarkup(new InlineKeyboardButton("Назад") { Text = "Назад", CallbackData = data });
         }
 
         private static string fill_para(string time_start, string time_end, string para_name, string prepod, string link)
@@ -562,7 +571,7 @@ namespace Telegram_Bot
             return text;
         }
 
-        
+
         private static IReplyMarkup GetInlineButtonsDays(rospOnDay day)
         {
             string first_1;
@@ -607,13 +616,13 @@ namespace Telegram_Bot
             else if (first_2 != "")
             {
                 firstkeyboard_1 = InlineKeyboardButton.WithCallbackData(text: "", callbackData: "first_chisl");
-                firstkeyboard_2 = InlineKeyboardButton.WithCallbackData(text: "1", callbackData: "first_chisl");
+                firstkeyboard_2 = InlineKeyboardButton.WithCallbackData(text: "1", callbackData: "first_znam");
             }
 
             else
             {
                 firstkeyboard_1 = InlineKeyboardButton.WithCallbackData(text: "", callbackData: "first_chisl");
-                firstkeyboard_2 = InlineKeyboardButton.WithCallbackData(text: "", callbackData: "first_chisl");
+                firstkeyboard_2 = InlineKeyboardButton.WithCallbackData(text: "", callbackData: "first_znam");
             }
 
             if (second_1 != "" && second_2 != "")
@@ -687,32 +696,58 @@ namespace Telegram_Bot
                 fourthkeyboard_2 = InlineKeyboardButton.WithCallbackData(text: "", callbackData: "fourth_znam");
             }
 
+            string _monday = "Понедельник";
+            string _tuesday = "Вторник";
+            string _wednesday = "Среда";
+            string _thursday = "Четверг";
+            string _friday = "Пятница";
+
+            string my_day = checkDay();
+            switch (my_day)
+            {
+                case "monday":
+                    _monday += "🔥";
+                    break;
+                case "tuesday":
+                    _tuesday += "🔥";
+                    break;
+                case "wednesday":
+                    _wednesday += "🔥";
+                    break;
+                case "thursday":
+                    _thursday += "🔥";
+                    break;
+                case "friday":
+                    _friday += "🔥";
+                    break;
+            }
+
             return new InlineKeyboardMarkup(new[]
             {
                 new[]
                 {
                     firstkeyboard_1, firstkeyboard_2, secondkeyboard_1, secondkeyboard_2, thirdkeyboard_1, thirdkeyboard_2, fourthkeyboard_1, fourthkeyboard_2,
                 },
-                
+
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData(text: "Понедельник", callbackData: "Понедельник"),
+                    InlineKeyboardButton.WithCallbackData(text: _monday, callbackData: "Понедельник"),
                 },
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData(text: "Вторник", callbackData: "Вторник"),
+                    InlineKeyboardButton.WithCallbackData(text: _tuesday, callbackData: "Вторник"),
                 },
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData(text: "Среда", callbackData: "Среда"),
+                    InlineKeyboardButton.WithCallbackData(text: _wednesday, callbackData: "Среда"),
                 },
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData(text: "Четверг", callbackData: "Четверг"),
+                    InlineKeyboardButton.WithCallbackData(text: _thursday, callbackData: "Четверг"),
                 },
                 new []
                 {
-                    InlineKeyboardButton.WithCallbackData(text: "Пятница", callbackData: "Пятница"),
+                    InlineKeyboardButton.WithCallbackData(text: _friday, callbackData: "Пятница"),
                 },
             });
 
