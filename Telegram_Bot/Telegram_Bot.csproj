@@ -3,7 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon>istockphoto-820948906-612x612.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="istockphoto-820948906-612x612.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="telegram.bot" Version="18.0.0" />
