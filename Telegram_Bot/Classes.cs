@@ -106,7 +106,7 @@ namespace Classes
             tuesday.fourthPara_2.link = "https://us04web.zoom.us/j/78122451647?pwd=FUFeaQgxhlFRQSvraKIVedSGiFM4GI";
 
 
-            wednesday.firstPara_1.name = "";
+            wednesday.firstPara_1.name = "Нет пары";
             wednesday.firstPara_2.name = "Основи професийнои україномовної комунікации, лекция";
             wednesday.firstPara_2.prepod = "Игнатова Лариса Миколаивна";
             wednesday.firstPara_2.link = "https://meet.google.com/zoq-chgp-dxk";
